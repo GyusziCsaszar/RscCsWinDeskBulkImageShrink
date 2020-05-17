@@ -361,6 +361,7 @@ namespace BulkImageShrink
         private void SetButtonStates(bool bInProgress)
         {
             btnOpenFile.Enabled = !bInProgress;
+            btnFolderOfImage.Enabled = !bInProgress;
             btnOpenFolder.Enabled = !bInProgress;
 
             btnSaveFile.Enabled = !bInProgress;
@@ -491,29 +492,34 @@ namespace BulkImageShrink
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                Clear();
-
-                List<string> asImageFiles = null;
-                try
-                {
-                    asImageFiles = new List<string>(System.IO.Directory.EnumerateFiles(dlg.SelectedPath, "*.*"));
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show("Unable to parse folder \"" + dlg.SelectedPath + "\"!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                Clear();
-
-                lblPathValue.Text = dlg.SelectedPath;
-
-                m_asImageFiles = asImageFiles;
-                m_iImageFiles  = m_asImageFiles.Count;
-
-                btnSaveFile.Text = "Save All Shrinked Images to Folder...";
+                OpenFolder(dlg.SelectedPath);
             }
 
+        }
+
+        private void OpenFolder(string sFolderPath)
+        {
+            Clear();
+
+            List<string> asImageFiles = null;
+            try
+            {
+                asImageFiles = new List<string>(System.IO.Directory.EnumerateFiles(sFolderPath, "*.*"));
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Unable to parse folder \"" + sFolderPath + "\"!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Clear();
+
+            lblPathValue.Text = sFolderPath;
+
+            m_asImageFiles = asImageFiles;
+            m_iImageFiles = m_asImageFiles.Count;
+
+            btnSaveFile.Text = "Save All Shrinked Images to Folder...";
         }
 
         private void tmrProcessFolder_Tick(object sender, EventArgs e)
@@ -705,6 +711,17 @@ namespace BulkImageShrink
                 lblImage.Height += (10 * iFactor);
                 lblImage.Top -= (10 * iFactor);
             }
+        }
+
+        private void btnFolderOfImage_Click(object sender, EventArgs e)
+        {
+            if (lblPathValue.Text.Length == 0 || m_asImageFiles != null)
+            {
+                MessageBox.Show("No Image is open! No Folder of Image available!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            OpenFolder(System.IO.Path.GetDirectoryName(lblPathValue.Text));
         }
     }
 }

@@ -51,6 +51,7 @@
             this.btnImgInfBarPp = new System.Windows.Forms.Button();
             this.lblImgInfSize = new System.Windows.Forms.Label();
             this.btnImgInfBarMm = new System.Windows.Forms.Button();
+            this.btnFolderOfImage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +64,7 @@
             this.btnOpenFile.ForeColor = System.Drawing.Color.RoyalBlue;
             this.btnOpenFile.Location = new System.Drawing.Point(537, 12);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(229, 23);
+            this.btnOpenFile.Size = new System.Drawing.Size(104, 23);
             this.btnOpenFile.TabIndex = 2;
             this.btnOpenFile.Text = "Image...";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -291,7 +292,7 @@
             this.btnImgInfBarPp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImgInfBarPp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnImgInfBarPp.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.btnImgInfBarPp.Location = new System.Drawing.Point(678, 543);
+            this.btnImgInfBarPp.Location = new System.Drawing.Point(537, 543);
             this.btnImgInfBarPp.Name = "btnImgInfBarPp";
             this.btnImgInfBarPp.Size = new System.Drawing.Size(32, 23);
             this.btnImgInfBarPp.TabIndex = 19;
@@ -303,11 +304,11 @@
             // 
             this.lblImgInfSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblImgInfSize.AutoSize = true;
-            this.lblImgInfSize.Location = new System.Drawing.Point(537, 548);
+            this.lblImgInfSize.Location = new System.Drawing.Point(616, 549);
             this.lblImgInfSize.Name = "lblImgInfSize";
-            this.lblImgInfSize.Size = new System.Drawing.Size(138, 13);
+            this.lblImgInfSize.Size = new System.Drawing.Size(153, 13);
             this.lblImgInfSize.TabIndex = 20;
-            this.lblImgInfSize.Text = "Font Size of Image Info Bar:";
+            this.lblImgInfSize.Text = "<-- Font Size of Image Info Bar!";
             // 
             // btnImgInfBarMm
             // 
@@ -315,7 +316,7 @@
             this.btnImgInfBarMm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnImgInfBarMm.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnImgInfBarMm.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.btnImgInfBarMm.Location = new System.Drawing.Point(719, 543);
+            this.btnImgInfBarMm.Location = new System.Drawing.Point(578, 543);
             this.btnImgInfBarMm.Name = "btnImgInfBarMm";
             this.btnImgInfBarMm.Size = new System.Drawing.Size(32, 23);
             this.btnImgInfBarMm.TabIndex = 21;
@@ -323,12 +324,27 @@
             this.btnImgInfBarMm.UseVisualStyleBackColor = true;
             this.btnImgInfBarMm.Click += new System.EventHandler(this.btnImgInfBarMm_Click);
             // 
+            // btnFolderOfImage
+            // 
+            this.btnFolderOfImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFolderOfImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFolderOfImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnFolderOfImage.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnFolderOfImage.Location = new System.Drawing.Point(642, 12);
+            this.btnFolderOfImage.Name = "btnFolderOfImage";
+            this.btnFolderOfImage.Size = new System.Drawing.Size(124, 23);
+            this.btnFolderOfImage.TabIndex = 22;
+            this.btnFolderOfImage.Text = "Folder of Image";
+            this.btnFolderOfImage.UseVisualStyleBackColor = true;
+            this.btnFolderOfImage.Click += new System.EventHandler(this.btnFolderOfImage_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.btnFolderOfImage);
             this.Controls.Add(this.btnImgInfBarMm);
             this.Controls.Add(this.lblImgInfSize);
             this.Controls.Add(this.btnImgInfBarPp);
@@ -384,6 +400,7 @@
         private System.Windows.Forms.Button btnImgInfBarPp;
         private System.Windows.Forms.Label lblImgInfSize;
         private System.Windows.Forms.Button btnImgInfBarMm;
+        private System.Windows.Forms.Button btnFolderOfImage;
     }
 }
 
