@@ -46,6 +46,7 @@
             this.lblPathValue = new System.Windows.Forms.Label();
             this.chbPortrait = new System.Windows.Forms.CheckBox();
             this.btnCpyExifToClpBrd = new System.Windows.Forms.Button();
+            this.tmrProcessFolder = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -198,6 +199,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbExifData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbExifData.FormattingEnabled = true;
+            this.lbExifData.HorizontalScrollbar = true;
             this.lbExifData.Location = new System.Drawing.Point(537, 254);
             this.lbExifData.Name = "lbExifData";
             this.lbExifData.Size = new System.Drawing.Size(343, 314);
@@ -258,6 +260,11 @@
             this.btnCpyExifToClpBrd.UseVisualStyleBackColor = false;
             this.btnCpyExifToClpBrd.Click += new System.EventHandler(this.btnCpyExifToClpBrd_Click);
             // 
+            // tmrProcessFolder
+            // 
+            this.tmrProcessFolder.Interval = 500;
+            this.tmrProcessFolder.Tick += new System.EventHandler(this.tmrProcessFolder_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +317,7 @@
         private System.Windows.Forms.Label lblPathValue;
         private System.Windows.Forms.CheckBox chbPortrait;
         private System.Windows.Forms.Button btnCpyExifToClpBrd;
+        private System.Windows.Forms.Timer tmrProcessFolder;
     }
 }
 

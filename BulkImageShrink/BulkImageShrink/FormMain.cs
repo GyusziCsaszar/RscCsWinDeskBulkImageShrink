@@ -15,12 +15,19 @@ namespace BulkImageShrink
         protected const string csAPP_TITLE  = "Bulk Image Shrink v1.00";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
+        protected const string csDEF_OUTPUT_EXT = ".png";
+
         protected const int ciWIDTH_NORMAL  = 900;
         protected const int ciHEIGHT_NORMAL = 600;
 
         protected const string csATTN_KEEP_IMAGE_VISISBLE = "ATTN: Keep image view visible during processing!!!";
 
         protected string m_sPathToSaveImageTo = "";
+        protected bool m_bFolderOperation = false;
+
+        protected List<string> m_asImageFiles = null;
+
+        protected string m_sFolderToSaveImageTo = "";
 
         public FormMain()
         {
@@ -69,6 +76,18 @@ namespace BulkImageShrink
 
             chbPortrait.Checked = true;
           //SetOrientation(chbPortrait.Checked);
+
+            if (m_asImageFiles != null)
+            {
+                m_asImageFiles.Clear();
+            }
+            m_asImageFiles = null;
+
+            m_sFolderToSaveImageTo = "";
+
+            m_sPathToSaveImageTo = "";
+
+            m_bFolderOperation = false;
         }
 
         private void SetOrientation(bool bPortrait)
@@ -169,133 +188,146 @@ namespace BulkImageShrink
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                LoadImage(dlg.FileName);
+                Image img = null;
+
+                try
+                {
+                    img = Image.FromFile(dlg.FileName);
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Unable to open file \"" + dlg.FileName + "\"!\n\nException: " + exc.Message, csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Clear();
+
+                if (!LoadImage(img, dlg.FileName))
+                {
+                    Clear();
+                    return;
+                }
+
+                btnSaveFile.Text = "Save Shrinked Single Image As...";
             }
         }
 
-        private bool LoadImage(string sImagePath)
+        private bool LoadImage(Image img, string sImagePath)
         {
             string sExifTitle = "";
 
-            Image img = null;
-
             try
             {
-                img = Image.FromFile(sImagePath);
+                foreach (System.Drawing.Imaging.PropertyItem pi in img.PropertyItems)
+                {
+                    string sProp = "";
+
+                    sProp += "0x" + pi.Id.ToString("X04");
+
+                    sProp += " ";
+                    sProp += "Type(";
+                    sProp += pi.Type.ToString();
+                    sProp += ")";
+
+                    sProp += " ";
+
+                    switch (pi.Id)
+                    {
+
+                        case 0x010F: sProp += "Equip Make -> "; break;
+
+                        case 0x0110: sProp += "Equip Model -> "; break;
+
+                        case 0x011A: sProp += "X Resolution -> "; break;
+
+                        case 0x011B: sProp += "Y Resolution -> "; break;
+
+                        case 0x0112: sProp += "Orientation -> "; break;
+
+                        case 0x0128: sProp += "Resolution Unit -> "; break;
+
+                        case 0x0132: sProp += "DateTime -> "; break;
+
+                        case 0x0213: sProp += "YCbCr Positioning -> "; break;
+
+                        case 0x0320: sProp += "Image Title -> "; break;
+
+                        case 0x9003: sProp += "Exif DT Orig -> "; break;
+
+                        case 0x9004: sProp += "Exif DT Digitized -> "; break;
+
+                    }
+
+
+                    switch (pi.Type)
+                    {
+
+                        case 2:
+                            {
+                                System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+                                string sTx = encoding.GetString(pi.Value);
+
+                                if (sTx.Length > 0)
+                                {
+                                    if (sTx[sTx.Length - 1] == '\0')
+                                    {
+                                        sTx = sTx.Substring(0, sTx.Length - 1);
+                                    }
+
+                                    sProp += sTx;
+
+                                    switch (pi.Id)
+                                    {
+
+                                        case 0x010F: //Equip Make
+                                            {
+                                                if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                                sExifTitle += sTx.Substring(0, 1).ToUpper() + sTx.Substring(1);
+                                                break;
+                                            }
+
+                                        case 0x0110: //Equip Model
+                                        case 0x9003: //Exif DT Orig
+                                            {
+                                                if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                                sExifTitle += sTx;
+                                                break;
+                                            }
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case 3:
+                            {
+                                int int16 = MakeInt16(pi.Value[0], pi.Value[1]);
+                                sProp += int16.ToString();
+                                break;
+                            }
+
+                        default:
+                            {
+                                sProp += " Value[";
+                                sProp += pi.Len.ToString();
+                                sProp += "] ";
+
+                                for (int i = 0; i < pi.Len; i++)
+                                {
+                                    sProp += " " + pi.Value[i].ToString("X02");
+                                }
+
+                                break;
+                            }
+
+                    }
+
+                    lbExifData.Items.Add(sProp);
+                }
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Unable to open file \"" + sImagePath + "\"!\n\nException: " + exc.Message, csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            Clear();
-
-            foreach (System.Drawing.Imaging.PropertyItem pi in img.PropertyItems)
-            {
-                string sProp = "";
-
-                sProp += "0x" + pi.Id.ToString("X04");
-
-                sProp += " ";
-                sProp += "Type(";
-                sProp += pi.Type.ToString();
-                sProp += ")";
-
-                sProp += " ";
-
-                switch (pi.Id)
-                {
-
-                    case 0x010F: sProp += "Equip Make -> "; break;
-
-                    case 0x0110: sProp += "Equip Model -> "; break;
-
-                    case 0x011A: sProp += "X Resolution -> "; break;
-
-                    case 0x011B: sProp += "Y Resolution -> "; break;
-
-                    case 0x0112: sProp += "Orientation -> "; break;
-
-                    case 0x0128: sProp += "Resolution Unit -> "; break;
-
-                    case 0x0132: sProp += "DateTime -> "; break;
-
-                    case 0x0213: sProp += "YCbCr Positioning -> "; break;
-
-                    case 0x0320: sProp += "Image Title -> "; break;
-
-                    case 0x9003: sProp += "Exif DT Orig -> "; break;
-
-                    case 0x9004: sProp += "Exif DT Digitized -> "; break;
-
-                }
-
-
-                switch (pi.Type)
-                {
-
-                    case 2:
-                    {
-                        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-                        string sTx = encoding.GetString(pi.Value);
-
-                        if (sTx.Length > 0)
-                        {
-                            if (sTx[sTx.Length - 1] == '\0')
-                            {
-                                sTx = sTx.Substring(0, sTx.Length - 1);
-                            }
-
-                            sProp += sTx;
-
-                            switch (pi.Id)
-                            {
-
-                                case 0x010F: //Equip Make
-                                {
-                                    if (sExifTitle.Length > 0) sExifTitle += " - ";
-                                    sExifTitle += sTx.Substring(0, 1).ToUpper() + sTx.Substring(1);
-                                    break;
-                                }
-
-                                case 0x0110: //Equip Model
-                                case 0x9003: //Exif DT Orig
-                                {
-                                    if (sExifTitle.Length > 0) sExifTitle += " - ";
-                                    sExifTitle += sTx;
-                                    break;
-                                }
-                            }
-                        }
-
-                        break;
-                    }
-
-                    case 3:
-                    {
-                        int int16 = MakeInt16(pi.Value[0], pi.Value[1]);
-                        sProp += int16.ToString();
-                        break;
-                    }
-
-                    default:
-                    {
-                        sProp += " Value[";
-                        sProp += pi.Len.ToString();
-                        sProp += "] ";
-
-                        for (int i = 0; i < pi.Len; i++)
-                        {
-                            sProp += " " + pi.Value[i].ToString("X02");
-                        }
-
-                        break;
-                    }
-
-                }
-
-                lbExifData.Items.Add(sProp);
+                sExifTitle = "ERROR: " + exc.Message;
             }
 
             if (sExifTitle.Length == 0) sExifTitle = "N/A";
@@ -312,17 +344,40 @@ namespace BulkImageShrink
 
         private void btnSaveFile_Click(object sender, EventArgs e)
         {
-
-            SaveFileDialog dlg = new SaveFileDialog();
-
-            dlg.Filter = "PNG (*.png)|*.png|All Files (*.*)|*.*";
-            dlg.DefaultExt = ".png";
-
-            if (DialogResult.OK == dlg.ShowDialog())
+            if (m_asImageFiles != null)
             {
-                m_sPathToSaveImageTo = dlg.FileName;
+                if (m_asImageFiles.Count == 0)
+                {
+                    MessageBox.Show("Selected folder is empty!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
 
-                tmrSaveFile.Enabled = true;
+                FolderBrowserDialog dlg = new FolderBrowserDialog();
+
+                dlg.SelectedPath = lblPathValue.Text;
+
+                if (DialogResult.OK == dlg.ShowDialog())
+                {
+                    m_sFolderToSaveImageTo = dlg.SelectedPath;
+
+                    tmrProcessFolder.Enabled = true;
+                }
+            }
+            else
+            {
+                SaveFileDialog dlg = new SaveFileDialog();
+
+                dlg.Filter = "PNG (*" + csDEF_OUTPUT_EXT + ")|*" + csDEF_OUTPUT_EXT + "|All Files (*.*)|*.*";
+                dlg.DefaultExt = csDEF_OUTPUT_EXT;
+
+                if (DialogResult.OK == dlg.ShowDialog())
+                {
+
+                    m_sPathToSaveImageTo    = dlg.FileName;
+                    m_bFolderOperation      = false;
+
+                    tmrSaveFile.Enabled     = true;
+                }
             }
         }
 
@@ -330,20 +385,40 @@ namespace BulkImageShrink
         {
             tmrSaveFile.Enabled = false;
 
-            Rectangle rcImgCtrl = pbImage.Bounds;
-
-            Point ptScreen = pbImage.PointToScreen(new Point(0, 0));
-
-            using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
+            if (SaveShrinkedImage(m_sPathToSaveImageTo))
             {
-                using (Graphics gScreen = Graphics.FromImage(bmp))
+                if (m_bFolderOperation)
                 {
-                    gScreen.CopyFromScreen(ptScreen /*rc.Location*/, Point.Empty, rcImgCtrl.Size);
+                    tmrProcessFolder.Enabled = true;
                 }
+            }
+        }
 
-                bmp.Save(m_sPathToSaveImageTo, System.Drawing.Imaging.ImageFormat.Png);
+        private bool SaveShrinkedImage(string sImagePath)
+        {
+            try
+            {
+                Rectangle rcImgCtrl = pbImage.Bounds;
+
+                Point ptScreen = pbImage.PointToScreen(new Point(0, 0));
+
+                using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
+                {
+                    using (Graphics gScreen = Graphics.FromImage(bmp))
+                    {
+                        gScreen.CopyFromScreen(ptScreen /*rc.Location*/, Point.Empty, rcImgCtrl.Size);
+                    }
+
+                    bmp.Save(sImagePath, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Unable to save shrinked image file \"" + sImagePath + "\"!\n\nException: " + exc.Message, csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
 
+            return true;
         }
 
         private void btnCpyExifToClpBrd_Click(object sender, EventArgs e)
@@ -371,7 +446,111 @@ namespace BulkImageShrink
 
         private void btnOpenFolder_Click(object sender, EventArgs e)
         {
-            Clear();
+            FolderBrowserDialog dlg = new FolderBrowserDialog();
+
+            if (lblPathValue.Text.Length > 0)
+            {
+                dlg.SelectedPath = System.IO.Path.GetDirectoryName(lblPathValue.Text);
+            }
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                Clear();
+
+                List<string> asImageFiles = null;
+                try
+                {
+                    asImageFiles = new List<string>(System.IO.Directory.EnumerateFiles(dlg.SelectedPath, "*.*"));
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show("Unable to parse folder \"" + dlg.SelectedPath + "\"!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Clear();
+
+                lblPathValue.Text = dlg.SelectedPath;
+
+                m_asImageFiles = asImageFiles;
+
+                btnSaveFile.Text = "Save All Shrinked Images to Folder...";
+            }
+
+        }
+
+        private void tmrProcessFolder_Tick(object sender, EventArgs e)
+        {
+            tmrProcessFolder.Enabled = false;
+
+            if (m_asImageFiles.Count == 0)
+            {
+                Clear();
+
+                MessageBox.Show("Operation completed successfully!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                return; //Nothing to do!
+            }
+
+            string sImagePath = m_asImageFiles[0];
+            m_asImageFiles.RemoveAt(0);
+
+            bool bLoadSuccess = false;
+
+            for (; ; )
+            {
+                string sLastError = "";
+
+                Image img = null;
+
+                try
+                {
+                    img = Image.FromFile(sImagePath);
+                    bLoadSuccess = true;
+                }
+                catch (Exception exc)
+                {
+                    sLastError = "Unable to open file \"" + sImagePath + "\"! Exception: " + exc.Message;
+                    bLoadSuccess = false;
+                }
+
+                lbExifData.Items.Clear();
+
+                if (bLoadSuccess)
+                {
+                    bLoadSuccess = LoadImage(img, sImagePath);
+                }
+
+                if (!bLoadSuccess)
+                {
+                    DialogResult dr = MessageBox.Show("An error occurred loading image \"" + sImagePath + "\"!\n\nERROR: " + sLastError + "\n\nDo you want to continue?", csAPP_TITLE, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+
+                    if (dr == DialogResult.Abort)
+                    {
+                        return;
+                    }
+
+                    if (dr == DialogResult.Retry)
+                    {
+                        continue;
+                    }
+                }
+
+                break;
+            }
+
+            if (bLoadSuccess)
+            {
+
+                m_sPathToSaveImageTo    = m_sFolderToSaveImageTo + "\\" + System.IO.Path.GetFileNameWithoutExtension(sImagePath) + csDEF_OUTPUT_EXT;
+                m_bFolderOperation      = true;
+
+                tmrSaveFile.Enabled     = true;
+            }
+            else
+            {
+                tmrProcessFolder.Enabled = true;
+            }
         }
     }
 }
