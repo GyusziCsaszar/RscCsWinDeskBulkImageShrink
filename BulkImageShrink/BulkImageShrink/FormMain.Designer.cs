@@ -48,6 +48,9 @@
             this.btnCpyExifToClpBrd = new System.Windows.Forms.Button();
             this.tmrProcessFolder = new System.Windows.Forms.Timer(this.components);
             this.btnPauseResume = new System.Windows.Forms.Button();
+            this.btnImgInfBarPp = new System.Windows.Forms.Button();
+            this.lblImgInfSize = new System.Windows.Forms.Label();
+            this.btnImgInfBarMm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -203,7 +206,7 @@
             this.lbExifData.HorizontalScrollbar = true;
             this.lbExifData.Location = new System.Drawing.Point(537, 254);
             this.lbExifData.Name = "lbExifData";
-            this.lbExifData.Size = new System.Drawing.Size(343, 314);
+            this.lbExifData.Size = new System.Drawing.Size(343, 275);
             this.lbExifData.TabIndex = 9;
             // 
             // lblImage
@@ -282,12 +285,53 @@
             this.btnPauseResume.UseVisualStyleBackColor = false;
             this.btnPauseResume.Click += new System.EventHandler(this.btnPauseResume_Click);
             // 
+            // btnImgInfBarPp
+            // 
+            this.btnImgInfBarPp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnImgInfBarPp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImgInfBarPp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnImgInfBarPp.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnImgInfBarPp.Location = new System.Drawing.Point(678, 543);
+            this.btnImgInfBarPp.Name = "btnImgInfBarPp";
+            this.btnImgInfBarPp.Size = new System.Drawing.Size(32, 23);
+            this.btnImgInfBarPp.TabIndex = 19;
+            this.btnImgInfBarPp.Text = "+";
+            this.btnImgInfBarPp.UseVisualStyleBackColor = true;
+            this.btnImgInfBarPp.Click += new System.EventHandler(this.btnImgInfBarPp_Click);
+            // 
+            // lblImgInfSize
+            // 
+            this.lblImgInfSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblImgInfSize.AutoSize = true;
+            this.lblImgInfSize.Location = new System.Drawing.Point(537, 548);
+            this.lblImgInfSize.Name = "lblImgInfSize";
+            this.lblImgInfSize.Size = new System.Drawing.Size(138, 13);
+            this.lblImgInfSize.TabIndex = 20;
+            this.lblImgInfSize.Text = "Font Size of Image Info Bar:";
+            // 
+            // btnImgInfBarMm
+            // 
+            this.btnImgInfBarMm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnImgInfBarMm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImgInfBarMm.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnImgInfBarMm.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnImgInfBarMm.Location = new System.Drawing.Point(719, 543);
+            this.btnImgInfBarMm.Name = "btnImgInfBarMm";
+            this.btnImgInfBarMm.Size = new System.Drawing.Size(32, 23);
+            this.btnImgInfBarMm.TabIndex = 21;
+            this.btnImgInfBarMm.Text = "-";
+            this.btnImgInfBarMm.UseVisualStyleBackColor = true;
+            this.btnImgInfBarMm.Click += new System.EventHandler(this.btnImgInfBarMm_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.btnImgInfBarMm);
+            this.Controls.Add(this.lblImgInfSize);
+            this.Controls.Add(this.btnImgInfBarPp);
             this.Controls.Add(this.btnPauseResume);
             this.Controls.Add(this.btnCpyExifToClpBrd);
             this.Controls.Add(this.pbImage);
@@ -337,6 +381,9 @@
         private System.Windows.Forms.Button btnCpyExifToClpBrd;
         private System.Windows.Forms.Timer tmrProcessFolder;
         private System.Windows.Forms.Button btnPauseResume;
+        private System.Windows.Forms.Button btnImgInfBarPp;
+        private System.Windows.Forms.Label lblImgInfSize;
+        private System.Windows.Forms.Button btnImgInfBarMm;
     }
 }
 

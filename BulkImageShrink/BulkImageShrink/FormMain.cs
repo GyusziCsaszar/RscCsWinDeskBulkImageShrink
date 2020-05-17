@@ -32,6 +32,7 @@ namespace BulkImageShrink
         protected int m_iImageFiles = 0;
 
         protected string m_sFolderToSaveImageTo = "";
+        protected int m_iTcStart = 0;
 
         public FormMain()
         {
@@ -93,6 +94,7 @@ namespace BulkImageShrink
             m_iImageFiles  = 0;
 
             m_sFolderToSaveImageTo = "";
+            m_iTcStart = 0;
 
             m_sPathToSaveImageTo = "";
 
@@ -382,6 +384,8 @@ namespace BulkImageShrink
                 {
                     m_sFolderToSaveImageTo = dlg.SelectedPath;
 
+                    m_iTcStart = Environment.TickCount;
+
                     SetButtonStates(true);
 
                     tmrProcessFolder.Enabled = true;
@@ -525,7 +529,52 @@ namespace BulkImageShrink
             string sImagePath = m_asImageFiles[0];
             m_asImageFiles.RemoveAt(0);
 
-            string sImgPos = "Image " + (m_iImageFiles - m_asImageFiles.Count).ToString() + " of " + m_iImageFiles.ToString() + " | ";
+            int iImagesDone = (m_iImageFiles - m_asImageFiles.Count) - 1;
+
+            string sImgPos = "";
+
+            // Time remaining
+            int iTcElapsed = Environment.TickCount - m_iTcStart;
+            if (iImagesDone > 0)
+            {
+                int iTcPerImage = iTcElapsed / iImagesDone;
+                int iTc = (m_iImageFiles - iImagesDone) * iTcPerImage;
+
+                int iSec = iTc / 1000;
+
+                int iMin = 0;
+                if (iSec >= 60)
+                {
+                    iMin = iSec / 60;
+                    iSec = iSec % 60;
+                }
+
+                int iHrs = 0;
+                if (iMin >= 60)
+                {
+                    iHrs = iMin / 60;
+                    iMin = iMin % 60;
+                }
+
+                int iDays = 0;
+                if (iHrs >= 24)
+                {
+                    iDays = iHrs / 24;
+                    iHrs = iHrs % 24;
+                }
+
+                if (iDays > 0) sImgPos += iDays.ToString() + "d ";
+                if (iHrs > 0) sImgPos += iHrs.ToString() + "h ";
+                if (iMin > 0) sImgPos += iMin.ToString() + "m ";
+                if (iSec > 0) sImgPos += iSec.ToString() + "s ";
+
+                if (sImgPos.Length > 0)
+                {
+                    sImgPos += "remaining | ";
+                }
+            }
+
+            sImgPos += "Image " + (iImagesDone + 1).ToString() + " of " + m_iImageFiles.ToString() + " | ";
 
             bool bLoadSuccess = false;
 
@@ -609,6 +658,20 @@ namespace BulkImageShrink
                     btnPauseResume.Text = csBTNCAP_PAUSE;
                 }
             }
+        }
+
+        private void btnImgInfBarPp_Click(object sender, EventArgs e)
+        {
+            lblImage.Top -= 10;
+            lblImage.Height += 10;
+            lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size + 2, lblImage.Font.Style);
+        }
+
+        private void btnImgInfBarMm_Click(object sender, EventArgs e)
+        {
+            lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size - 2, lblImage.Font.Style);
+            lblImage.Height -= 10;
+            lblImage.Top += 10;
         }
     }
 }
