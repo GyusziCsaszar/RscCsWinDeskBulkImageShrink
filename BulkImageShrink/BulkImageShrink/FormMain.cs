@@ -25,6 +25,8 @@ namespace BulkImageShrink
 
         protected const string csATTN_KEEP_IMAGE_VISISBLE = "ATTN: Keep image view visible during processing!!!";
 
+        protected int m_iImgInfBarSizeFactor = 0;
+
         protected string m_sPathToSaveImageTo = "";
         protected bool m_bFolderOperation = false;
 
@@ -53,6 +55,9 @@ namespace BulkImageShrink
             int iTrgIgmHeight = StorageRegistry.Read("TargetImage_Height", pbImage.Height);
             tbTrgImgWidth.Text = iTrgIgmWidth.ToString();
             tbTrgImgHeight.Text = iTrgIgmHeight.ToString();
+
+            m_iImgInfBarSizeFactor = StorageRegistry.Read("Img_Inf_Bar_Size_factor", m_iImgInfBarSizeFactor);
+            SetImageInfoBarSize(m_iImgInfBarSizeFactor);
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -537,8 +542,10 @@ namespace BulkImageShrink
             int iTcElapsed = Environment.TickCount - m_iTcStart;
             if (iImagesDone > 0)
             {
+                int iImagesRem = m_iImageFiles - iImagesDone;
+
                 int iTcPerImage = iTcElapsed / iImagesDone;
-                int iTc = (m_iImageFiles - iImagesDone) * iTcPerImage;
+                int iTc = (iImagesRem) * iTcPerImage;
 
                 int iSec = iTc / 1000;
 
@@ -570,6 +577,9 @@ namespace BulkImageShrink
 
                 if (sImgPos.Length > 0)
                 {
+
+                    sImgPos += "(" + iImagesRem.ToString() + ") "; // Count of remaining images
+
                     sImgPos += "remaining | ";
                 }
             }
@@ -662,16 +672,39 @@ namespace BulkImageShrink
 
         private void btnImgInfBarPp_Click(object sender, EventArgs e)
         {
-            lblImage.Top -= 10;
-            lblImage.Height += 10;
-            lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size + 2, lblImage.Font.Style);
+            m_iImgInfBarSizeFactor++;
+            StorageRegistry.Write("Img_Inf_Bar_Size_factor", m_iImgInfBarSizeFactor);
+
+            SetImageInfoBarSize(1);
         }
 
         private void btnImgInfBarMm_Click(object sender, EventArgs e)
         {
-            lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size - 2, lblImage.Font.Style);
-            lblImage.Height -= 10;
-            lblImage.Top += 10;
+            m_iImgInfBarSizeFactor--;
+            StorageRegistry.Write("Img_Inf_Bar_Size_factor", m_iImgInfBarSizeFactor);
+
+            SetImageInfoBarSize(-1);
+        }
+
+        private void SetImageInfoBarSize(int iFactor)
+        {
+            if (iFactor == 0)
+            {
+                return;
+            }
+
+            if (iFactor > 0)
+            {
+                lblImage.Top -= (10 * iFactor);
+                lblImage.Height += (10 * iFactor);
+                lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size + (2 * iFactor), lblImage.Font.Style);
+            }
+            else if (iFactor < 0)
+            {
+                lblImage.Font = new Font(lblImage.Font.FontFamily, lblImage.Font.Size + (2 * iFactor), lblImage.Font.Style);
+                lblImage.Height += (10 * iFactor);
+                lblImage.Top -= (10 * iFactor);
+            }
         }
     }
 }
