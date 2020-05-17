@@ -60,7 +60,7 @@
             this.btnOpenFile.ForeColor = System.Drawing.Color.RoyalBlue;
             this.btnOpenFile.Location = new System.Drawing.Point(537, 12);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(168, 23);
+            this.btnOpenFile.Size = new System.Drawing.Size(229, 23);
             this.btnOpenFile.TabIndex = 2;
             this.btnOpenFile.Text = "Image...";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -72,9 +72,9 @@
             this.btnOpenFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnOpenFolder.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.btnOpenFolder.Location = new System.Drawing.Point(712, 12);
+            this.btnOpenFolder.Location = new System.Drawing.Point(768, 12);
             this.btnOpenFolder.Name = "btnOpenFolder";
-            this.btnOpenFolder.Size = new System.Drawing.Size(168, 23);
+            this.btnOpenFolder.Size = new System.Drawing.Size(112, 23);
             this.btnOpenFolder.TabIndex = 3;
             this.btnOpenFolder.Text = "Folder...";
             this.btnOpenFolder.UseVisualStyleBackColor = true;
@@ -153,7 +153,7 @@
             this.tbTrgImgWidth.Location = new System.Drawing.Point(578, 167);
             this.tbTrgImgWidth.Name = "tbTrgImgWidth";
             this.tbTrgImgWidth.Size = new System.Drawing.Size(52, 20);
-            this.tbTrgImgWidth.TabIndex = 9;
+            this.tbTrgImgWidth.TabIndex = 11;
             this.tbTrgImgWidth.Text = "240";
             this.tbTrgImgWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbTrgImgWidth.TextChanged += new System.EventHandler(this.tbTrgImgWidth_TextChanged);
@@ -175,7 +175,7 @@
             this.tbTrgImgHeight.Location = new System.Drawing.Point(684, 167);
             this.tbTrgImgHeight.Name = "tbTrgImgHeight";
             this.tbTrgImgHeight.Size = new System.Drawing.Size(52, 20);
-            this.tbTrgImgHeight.TabIndex = 11;
+            this.tbTrgImgHeight.TabIndex = 13;
             this.tbTrgImgHeight.Text = "400";
             this.tbTrgImgHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbTrgImgHeight.TextChanged += new System.EventHandler(this.tbTrgImgHeight_TextChanged);
@@ -204,7 +204,7 @@
             this.lbExifData.Location = new System.Drawing.Point(537, 254);
             this.lbExifData.Name = "lbExifData";
             this.lbExifData.Size = new System.Drawing.Size(343, 314);
-            this.lbExifData.TabIndex = 13;
+            this.lbExifData.TabIndex = 9;
             // 
             // lblImage
             // 
@@ -280,6 +280,7 @@
             this.btnPauseResume.TabIndex = 18;
             this.btnPauseResume.Text = "PAUSE";
             this.btnPauseResume.UseVisualStyleBackColor = false;
+            this.btnPauseResume.Click += new System.EventHandler(this.btnPauseResume_Click);
             // 
             // FormMain
             // 

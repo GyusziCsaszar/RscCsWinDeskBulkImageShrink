@@ -57,15 +57,19 @@ namespace BulkImageShrink
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            //TODO...
-            //e.Cancel = true;
+            if (tmrProcessFolder.Enabled)
+            {
+                if (DialogResult.Yes != MessageBox.Show("Saving Images is in progress!\n\nDo you want to abort operation?", csAPP_TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation))
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
 
             /*if (this.Left >= 0)*/ StorageRegistry.Write("Main_Left", this.Left);
             if (this.Top >= 0) StorageRegistry.Write("Main_Top", this.Top);
             if (this.Width >= ciWIDTH_NORMAL) StorageRegistry.Write("Main_Width", this.Width);
             if (this.Height >= ciHEIGHT_NORMAL) StorageRegistry.Write("Main_Height", this.Height);
-
-            //TODO...
         }
 
         private void Clear()
@@ -409,7 +413,10 @@ namespace BulkImageShrink
             {
                 if (m_bFolderOperation)
                 {
-                    tmrProcessFolder.Enabled = true;
+                    if (btnPauseResume.Text != csBTNCAP_RESUME)
+                    {
+                        tmrProcessFolder.Enabled = true;
+                    }
                 }
             }
         }
@@ -574,7 +581,33 @@ namespace BulkImageShrink
             }
             else
             {
-                tmrProcessFolder.Enabled = true;
+                if (btnPauseResume.Text != csBTNCAP_RESUME)
+                {
+                    tmrProcessFolder.Enabled = true;
+                }
+            }
+        }
+
+        private void btnPauseResume_Click(object sender, EventArgs e)
+        {
+            if (btnPauseResume.Text == csBTNCAP_PAUSE)
+            {
+                if (m_iImageFiles > 0 && m_asImageFiles != null)
+                {
+
+                    tmrProcessFolder.Enabled = false;
+
+                    btnPauseResume.Text = csBTNCAP_RESUME;
+                }
+            }
+            else
+            {
+                if (m_iImageFiles > 0 && m_asImageFiles != null)
+                {
+                    tmrProcessFolder.Enabled = true;
+
+                    btnPauseResume.Text = csBTNCAP_PAUSE;
+                }
             }
         }
     }
