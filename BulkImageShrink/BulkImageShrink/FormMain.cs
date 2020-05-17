@@ -18,6 +18,8 @@ namespace BulkImageShrink
         protected const int ciWIDTH_NORMAL  = 900;
         protected const int ciHEIGHT_NORMAL = 600;
 
+        protected string m_sPathToSaveImageTo = "";
+
         public FormMain()
         {
             InitializeComponent();
@@ -46,6 +48,63 @@ namespace BulkImageShrink
             if (this.Height >= ciHEIGHT_NORMAL) StorageRegistry.Write("Main_Height", this.Height);
 
             //TODO...
+        }
+
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.Filter = "All Files (*.*)|*.*";
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                pbImage.Image = Image.FromFile(dlg.FileName);
+
+                tbPath.Text = dlg.FileName;
+            }
+        }
+
+        private void btnSaveFile_Click(object sender, EventArgs e)
+        {
+
+            SaveFileDialog dlg = new SaveFileDialog();
+
+            dlg.Filter = "PNG (*.png)|*.png|All Files (*.*)|*.*";
+            dlg.DefaultExt = ".png";
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                m_sPathToSaveImageTo = dlg.FileName;
+
+                tmrSaveFile.Enabled = true;
+            }
+        }
+
+        private void tmrSaveFile_Tick(object sender, EventArgs e)
+        {
+            tmrSaveFile.Enabled = false;
+
+            Rectangle rcImgCtrl = pbImage.Bounds;
+
+            Point ptScreen = pbImage.PointToScreen(new Point(0, 0));
+
+            //ptWnd.X += pbWorkplace.Bounds.X;
+            //ptWnd.Y += pbWorkplace.Bounds.Y;
+
+            //ptWnd.X += rcImgCtrl.X;
+            //ptWnd.Y += rcImgCtrl.Y;
+
+            using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
+            {
+                using (Graphics gScreen = Graphics.FromImage(bmp))
+                {
+                    gScreen.CopyFromScreen(ptScreen /*rc.Location*/, Point.Empty, rcImgCtrl.Size);
+                }
+
+                bmp.Save(m_sPathToSaveImageTo, System.Drawing.Imaging.ImageFormat.Png);
+            }
+
         }
     }
 }
