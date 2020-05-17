@@ -290,6 +290,9 @@ namespace BulkImageShrink
                                         sTx = sTx.Substring(0, sTx.Length - 1);
                                     }
 
+                                    // FIX!
+                                    sTx = sTx.TrimEnd();
+
                                     sProp += sTx;
 
                                     switch (pi.Id)
