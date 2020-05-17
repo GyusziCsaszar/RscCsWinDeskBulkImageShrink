@@ -47,6 +47,7 @@
             this.chbPortrait = new System.Windows.Forms.CheckBox();
             this.btnCpyExifToClpBrd = new System.Windows.Forms.Button();
             this.tmrProcessFolder = new System.Windows.Forms.Timer(this.components);
+            this.btnPauseResume = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -130,7 +131,7 @@
             this.lblTrgImgSize.ForeColor = System.Drawing.Color.Black;
             this.lblTrgImgSize.Location = new System.Drawing.Point(537, 137);
             this.lblTrgImgSize.Name = "lblTrgImgSize";
-            this.lblTrgImgSize.Size = new System.Drawing.Size(343, 23);
+            this.lblTrgImgSize.Size = new System.Drawing.Size(229, 23);
             this.lblTrgImgSize.TabIndex = 7;
             this.lblTrgImgSize.Text = "Target Image";
             this.lblTrgImgSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -265,12 +266,28 @@
             this.tmrProcessFolder.Interval = 500;
             this.tmrProcessFolder.Tick += new System.EventHandler(this.tmrProcessFolder_Tick);
             // 
+            // btnPauseResume
+            // 
+            this.btnPauseResume.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPauseResume.BackColor = System.Drawing.SystemColors.Window;
+            this.btnPauseResume.Enabled = false;
+            this.btnPauseResume.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPauseResume.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnPauseResume.ForeColor = System.Drawing.Color.OrangeRed;
+            this.btnPauseResume.Location = new System.Drawing.Point(769, 137);
+            this.btnPauseResume.Name = "btnPauseResume";
+            this.btnPauseResume.Size = new System.Drawing.Size(111, 23);
+            this.btnPauseResume.TabIndex = 18;
+            this.btnPauseResume.Text = "PAUSE";
+            this.btnPauseResume.UseVisualStyleBackColor = false;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.btnPauseResume);
             this.Controls.Add(this.btnCpyExifToClpBrd);
             this.Controls.Add(this.pbImage);
             this.Controls.Add(this.chbPortrait);
@@ -318,6 +335,7 @@
         private System.Windows.Forms.CheckBox chbPortrait;
         private System.Windows.Forms.Button btnCpyExifToClpBrd;
         private System.Windows.Forms.Timer tmrProcessFolder;
+        private System.Windows.Forms.Button btnPauseResume;
     }
 }
 

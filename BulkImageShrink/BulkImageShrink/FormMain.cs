@@ -17,6 +17,9 @@ namespace BulkImageShrink
 
         protected const string csDEF_OUTPUT_EXT = ".png";
 
+        protected const string csBTNCAP_PAUSE = "PAUSE";
+        protected const string csBTNCAP_RESUME = "RESUME";
+
         protected const int ciWIDTH_NORMAL  = 900;
         protected const int ciHEIGHT_NORMAL = 600;
 
@@ -26,6 +29,7 @@ namespace BulkImageShrink
         protected bool m_bFolderOperation = false;
 
         protected List<string> m_asImageFiles = null;
+        protected int m_iImageFiles = 0;
 
         protected string m_sFolderToSaveImageTo = "";
 
@@ -82,6 +86,7 @@ namespace BulkImageShrink
                 m_asImageFiles.Clear();
             }
             m_asImageFiles = null;
+            m_iImageFiles  = 0;
 
             m_sFolderToSaveImageTo = "";
 
@@ -212,7 +217,7 @@ namespace BulkImageShrink
             }
         }
 
-        private bool LoadImage(Image img, string sImagePath)
+        private bool LoadImage(Image img, string sImagePath, string sTitlePre = "")
         {
             string sExifTitle = "";
 
@@ -331,7 +336,7 @@ namespace BulkImageShrink
             }
 
             if (sExifTitle.Length == 0) sExifTitle = "N/A";
-            lblImage.Text = sExifTitle;
+            lblImage.Text = sTitlePre + sExifTitle;
 
             pbImage.Image = img;
 
@@ -340,6 +345,19 @@ namespace BulkImageShrink
             lblPathValue.Text = sImagePath;
 
             return true;
+        }
+
+        private void SetButtonStates(bool bInProgress)
+        {
+            btnOpenFile.Enabled = !bInProgress;
+            btnOpenFolder.Enabled = !bInProgress;
+
+            btnSaveFile.Enabled = !bInProgress;
+
+            btnCpyExifToClpBrd.Enabled = !bInProgress;
+
+            btnPauseResume.Enabled = bInProgress;
+            btnPauseResume.Text = csBTNCAP_PAUSE;
         }
 
         private void btnSaveFile_Click(object sender, EventArgs e)
@@ -359,6 +377,8 @@ namespace BulkImageShrink
                 if (DialogResult.OK == dlg.ShowDialog())
                 {
                     m_sFolderToSaveImageTo = dlg.SelectedPath;
+
+                    SetButtonStates(true);
 
                     tmrProcessFolder.Enabled = true;
                 }
@@ -473,6 +493,7 @@ namespace BulkImageShrink
                 lblPathValue.Text = dlg.SelectedPath;
 
                 m_asImageFiles = asImageFiles;
+                m_iImageFiles  = m_asImageFiles.Count;
 
                 btnSaveFile.Text = "Save All Shrinked Images to Folder...";
             }
@@ -485,6 +506,8 @@ namespace BulkImageShrink
 
             if (m_asImageFiles.Count == 0)
             {
+                SetButtonStates(false);
+
                 Clear();
 
                 MessageBox.Show("Operation completed successfully!", csAPP_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -494,6 +517,8 @@ namespace BulkImageShrink
 
             string sImagePath = m_asImageFiles[0];
             m_asImageFiles.RemoveAt(0);
+
+            string sImgPos = "Image " + (m_iImageFiles - m_asImageFiles.Count).ToString() + " of " + m_iImageFiles.ToString() + " | ";
 
             bool bLoadSuccess = false;
 
@@ -518,7 +543,7 @@ namespace BulkImageShrink
 
                 if (bLoadSuccess)
                 {
-                    bLoadSuccess = LoadImage(img, sImagePath);
+                    bLoadSuccess = LoadImage(img, sImagePath, sImgPos);
                 }
 
                 if (!bLoadSuccess)
