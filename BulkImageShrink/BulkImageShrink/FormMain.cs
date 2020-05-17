@@ -50,6 +50,11 @@ namespace BulkImageShrink
             //TODO...
         }
 
+        private int MakeInt16(int iHi, int iLo)
+        {
+            return ((iLo << 8) | (iHi & 0xFF));
+        }
+
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
 
@@ -59,7 +64,88 @@ namespace BulkImageShrink
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                pbImage.Image = Image.FromFile(dlg.FileName);
+                Image img = Image.FromFile(dlg.FileName);
+
+                foreach (System.Drawing.Imaging.PropertyItem pi in img.PropertyItems)
+                {
+                    string sProp = "";
+
+                    sProp += "0x" + pi.Id.ToString("X04");
+
+                    sProp += " ";
+
+                    switch (pi.Id)
+                    {
+
+                        case 0x010F: sProp += "Equip Make -> "; break;
+
+                        case 0x0110: sProp += "Equip Model -> "; break;
+
+                        case 0x011A: sProp += "X Resolution -> "; break;
+
+                        case 0x011B: sProp += "Y Resolution -> "; break;
+
+                        case 0x0112: sProp += "Orientation -> "; break;
+
+                        case 0x0128: sProp += "Resolution Unit -> "; break;
+
+                        case 0x0132: sProp += "DateTime -> "; break;
+
+                        case 0x0213: sProp += "YCbCr Positioning -> "; break;
+
+                        case 0x0320: sProp += "Image Title -> "; break;
+
+                        case 0x9003: sProp += "Exif DT Orig -> "; break;
+
+                        case 0x9004: sProp += "Exif DT Digitized -> "; break;
+
+                        /*
+                        default:
+                        {
+                            sProp += "0x" + pi.Id.ToString("X");
+                            break;
+                        }
+                        */
+
+                    }
+
+
+                    switch (pi.Type)
+                    {
+
+                        case 2:
+                        {
+                            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+                            sProp += encoding.GetString(pi.Value);
+                            break;
+                        }
+
+                        case 3:
+                        {
+                            int int16 = MakeInt16(pi.Value[0], pi.Value[1]);
+                            sProp += int16.ToString();
+                            break;
+                        }
+
+                        default:
+                        {
+                            sProp += "(";
+                            sProp += pi.Type.ToString();
+                            sProp += ")";
+
+                            sProp += " [";
+                            sProp += pi.Len.ToString();
+                            sProp += "]";
+
+                            break;
+                        }
+
+                    }
+
+                    lbExifData.Items.Add(sProp);
+                }
+
+                pbImage.Image = img;
 
                 tbPath.Text = dlg.FileName;
             }
@@ -88,12 +174,6 @@ namespace BulkImageShrink
             Rectangle rcImgCtrl = pbImage.Bounds;
 
             Point ptScreen = pbImage.PointToScreen(new Point(0, 0));
-
-            //ptWnd.X += pbWorkplace.Bounds.X;
-            //ptWnd.Y += pbWorkplace.Bounds.Y;
-
-            //ptWnd.X += rcImgCtrl.X;
-            //ptWnd.Y += rcImgCtrl.Y;
 
             using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
             {

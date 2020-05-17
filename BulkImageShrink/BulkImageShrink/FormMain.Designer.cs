@@ -42,6 +42,8 @@
             this.tbTrgImgWidth = new System.Windows.Forms.TextBox();
             this.lblTrgImgHeight = new System.Windows.Forms.Label();
             this.tbTrgImgHeight = new System.Windows.Forms.TextBox();
+            this.lblExifData = new System.Windows.Forms.Label();
+            this.lbExifData = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -97,7 +99,7 @@
             this.pbWorkplace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbWorkplace.Location = new System.Drawing.Point(15, 71);
             this.pbWorkplace.Name = "pbWorkplace";
-            this.pbWorkplace.Size = new System.Drawing.Size(704, 506);
+            this.pbWorkplace.Size = new System.Drawing.Size(503, 506);
             this.pbWorkplace.TabIndex = 4;
             this.pbWorkplace.TabStop = false;
             // 
@@ -115,7 +117,7 @@
             // 
             this.btnSaveFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveFile.Location = new System.Drawing.Point(736, 71);
+            this.btnSaveFile.Location = new System.Drawing.Point(736, 36);
             this.btnSaveFile.Name = "btnSaveFile";
             this.btnSaveFile.Size = new System.Drawing.Size(144, 23);
             this.btnSaveFile.TabIndex = 6;
@@ -175,12 +177,38 @@
             this.tbTrgImgHeight.Text = "400";
             this.tbTrgImgHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // lblExifData
+            // 
+            this.lblExifData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblExifData.BackColor = System.Drawing.SystemColors.Info;
+            this.lblExifData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblExifData.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.lblExifData.Location = new System.Drawing.Point(537, 71);
+            this.lblExifData.Name = "lblExifData";
+            this.lblExifData.Size = new System.Drawing.Size(343, 20);
+            this.lblExifData.TabIndex = 12;
+            this.lblExifData.Text = "EXIF data";
+            this.lblExifData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbExifData
+            // 
+            this.lbExifData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbExifData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbExifData.FormattingEnabled = true;
+            this.lbExifData.Location = new System.Drawing.Point(537, 95);
+            this.lbExifData.Name = "lbExifData";
+            this.lbExifData.Size = new System.Drawing.Size(343, 470);
+            this.lbExifData.TabIndex = 13;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.lbExifData);
+            this.Controls.Add(this.lblExifData);
             this.Controls.Add(this.tbTrgImgHeight);
             this.Controls.Add(this.lblTrgImgHeight);
             this.Controls.Add(this.tbTrgImgWidth);
@@ -219,6 +247,8 @@
         private System.Windows.Forms.TextBox tbTrgImgWidth;
         private System.Windows.Forms.Label lblTrgImgHeight;
         private System.Windows.Forms.TextBox tbTrgImgHeight;
+        private System.Windows.Forms.Label lblExifData;
+        private System.Windows.Forms.ListBox lbExifData;
     }
 }
 
