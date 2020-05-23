@@ -52,6 +52,12 @@
             this.lblImgInfSize = new System.Windows.Forms.Label();
             this.btnImgInfBarMm = new System.Windows.Forms.Button();
             this.btnFolderOfImage = new System.Windows.Forms.Button();
+            this.chbAutoOrientation = new System.Windows.Forms.CheckBox();
+            this.tbRen = new System.Windows.Forms.TextBox();
+            this.lblRenInf = new System.Windows.Forms.Label();
+            this.chbRen = new System.Windows.Forms.CheckBox();
+            this.chbExifAsTx = new System.Windows.Forms.CheckBox();
+            this.chbExifOnly = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -113,9 +119,9 @@
             this.btnSaveFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnSaveFile.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.btnSaveFile.Location = new System.Drawing.Point(537, 198);
+            this.btnSaveFile.Location = new System.Drawing.Point(537, 223);
             this.btnSaveFile.Name = "btnSaveFile";
-            this.btnSaveFile.Size = new System.Drawing.Size(343, 23);
+            this.btnSaveFile.Size = new System.Drawing.Size(229, 23);
             this.btnSaveFile.TabIndex = 6;
             this.btnSaveFile.Text = "Save Image As...";
             this.btnSaveFile.UseVisualStyleBackColor = true;
@@ -158,7 +164,7 @@
             this.tbTrgImgWidth.Name = "tbTrgImgWidth";
             this.tbTrgImgWidth.Size = new System.Drawing.Size(52, 20);
             this.tbTrgImgWidth.TabIndex = 11;
-            this.tbTrgImgWidth.Text = "240";
+            this.tbTrgImgWidth.Text = "360";
             this.tbTrgImgWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbTrgImgWidth.TextChanged += new System.EventHandler(this.tbTrgImgWidth_TextChanged);
             // 
@@ -180,7 +186,7 @@
             this.tbTrgImgHeight.Name = "tbTrgImgHeight";
             this.tbTrgImgHeight.Size = new System.Drawing.Size(52, 20);
             this.tbTrgImgHeight.TabIndex = 13;
-            this.tbTrgImgHeight.Text = "400";
+            this.tbTrgImgHeight.Text = "480";
             this.tbTrgImgHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbTrgImgHeight.TextChanged += new System.EventHandler(this.tbTrgImgHeight_TextChanged);
             // 
@@ -191,9 +197,9 @@
             this.lblExifData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblExifData.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblExifData.ForeColor = System.Drawing.Color.Black;
-            this.lblExifData.Location = new System.Drawing.Point(537, 229);
+            this.lblExifData.Location = new System.Drawing.Point(537, 254);
             this.lblExifData.Name = "lblExifData";
-            this.lblExifData.Size = new System.Drawing.Size(229, 23);
+            this.lblExifData.Size = new System.Drawing.Size(73, 23);
             this.lblExifData.TabIndex = 12;
             this.lblExifData.Text = "EXIF data";
             this.lblExifData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -205,9 +211,9 @@
             this.lbExifData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbExifData.FormattingEnabled = true;
             this.lbExifData.HorizontalScrollbar = true;
-            this.lbExifData.Location = new System.Drawing.Point(537, 254);
+            this.lbExifData.Location = new System.Drawing.Point(537, 280);
             this.lbExifData.Name = "lbExifData";
-            this.lbExifData.Size = new System.Drawing.Size(343, 275);
+            this.lbExifData.Size = new System.Drawing.Size(343, 249);
             this.lbExifData.TabIndex = 9;
             // 
             // lblImage
@@ -242,7 +248,8 @@
             this.chbPortrait.Checked = true;
             this.chbPortrait.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbPortrait.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chbPortrait.Location = new System.Drawing.Point(770, 168);
+            this.chbPortrait.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.chbPortrait.Location = new System.Drawing.Point(772, 168);
             this.chbPortrait.Name = "chbPortrait";
             this.chbPortrait.Size = new System.Drawing.Size(110, 17);
             this.chbPortrait.TabIndex = 16;
@@ -257,9 +264,9 @@
             this.btnCpyExifToClpBrd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCpyExifToClpBrd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnCpyExifToClpBrd.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.btnCpyExifToClpBrd.Location = new System.Drawing.Point(768, 229);
+            this.btnCpyExifToClpBrd.Location = new System.Drawing.Point(769, 254);
             this.btnCpyExifToClpBrd.Name = "btnCpyExifToClpBrd";
-            this.btnCpyExifToClpBrd.Size = new System.Drawing.Size(111, 23);
+            this.btnCpyExifToClpBrd.Size = new System.Drawing.Size(112, 23);
             this.btnCpyExifToClpBrd.TabIndex = 17;
             this.btnCpyExifToClpBrd.Text = "Copy as Text";
             this.btnCpyExifToClpBrd.UseVisualStyleBackColor = false;
@@ -338,12 +345,89 @@
             this.btnFolderOfImage.UseVisualStyleBackColor = true;
             this.btnFolderOfImage.Click += new System.EventHandler(this.btnFolderOfImage_Click);
             // 
+            // chbAutoOrientation
+            // 
+            this.chbAutoOrientation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbAutoOrientation.AutoSize = true;
+            this.chbAutoOrientation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.chbAutoOrientation.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.chbAutoOrientation.Location = new System.Drawing.Point(772, 227);
+            this.chbAutoOrientation.Name = "chbAutoOrientation";
+            this.chbAutoOrientation.Size = new System.Drawing.Size(102, 17);
+            this.chbAutoOrientation.TabIndex = 23;
+            this.chbAutoOrientation.Text = "Auto Orientation";
+            this.chbAutoOrientation.UseVisualStyleBackColor = true;
+            this.chbAutoOrientation.CheckedChanged += new System.EventHandler(this.chbAutoOrientation_CheckedChanged);
+            // 
+            // tbRen
+            // 
+            this.tbRen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbRen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbRen.Location = new System.Drawing.Point(595, 197);
+            this.tbRen.Name = "tbRen";
+            this.tbRen.Size = new System.Drawing.Size(141, 20);
+            this.tbRen.TabIndex = 25;
+            this.tbRen.Text = "%FN";
+            // 
+            // lblRenInf
+            // 
+            this.lblRenInf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRenInf.BackColor = System.Drawing.SystemColors.Info;
+            this.lblRenInf.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRenInf.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblRenInf.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.lblRenInf.Location = new System.Drawing.Point(748, 197);
+            this.lblRenInf.Name = "lblRenInf";
+            this.lblRenInf.Size = new System.Drawing.Size(133, 20);
+            this.lblRenInf.TabIndex = 26;
+            this.lblRenInf.Text = "%FN, %DT, %MK, %ML";
+            this.lblRenInf.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // chbRen
+            // 
+            this.chbRen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbRen.AutoSize = true;
+            this.chbRen.Location = new System.Drawing.Point(539, 199);
+            this.chbRen.Name = "chbRen";
+            this.chbRen.Size = new System.Drawing.Size(52, 17);
+            this.chbRen.TabIndex = 27;
+            this.chbRen.Text = "REN:";
+            this.chbRen.UseVisualStyleBackColor = true;
+            // 
+            // chbExifAsTx
+            // 
+            this.chbExifAsTx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbExifAsTx.AutoSize = true;
+            this.chbExifAsTx.Location = new System.Drawing.Point(619, 258);
+            this.chbExifAsTx.Name = "chbExifAsTx";
+            this.chbExifAsTx.Size = new System.Drawing.Size(64, 17);
+            this.chbExifAsTx.TabIndex = 28;
+            this.chbExifAsTx.Text = "as .TXT";
+            this.chbExifAsTx.UseVisualStyleBackColor = true;
+            // 
+            // chbExifOnly
+            // 
+            this.chbExifOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbExifOnly.AutoSize = true;
+            this.chbExifOnly.Location = new System.Drawing.Point(684, 258);
+            this.chbExifOnly.Name = "chbExifOnly";
+            this.chbExifOnly.Size = new System.Drawing.Size(71, 17);
+            this.chbExifOnly.TabIndex = 29;
+            this.chbExifOnly.Text = "EXIF only";
+            this.chbExifOnly.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.chbExifOnly);
+            this.Controls.Add(this.chbExifAsTx);
+            this.Controls.Add(this.chbRen);
+            this.Controls.Add(this.lblRenInf);
+            this.Controls.Add(this.tbRen);
+            this.Controls.Add(this.chbAutoOrientation);
             this.Controls.Add(this.btnFolderOfImage);
             this.Controls.Add(this.btnImgInfBarMm);
             this.Controls.Add(this.lblImgInfSize);
@@ -401,6 +485,12 @@
         private System.Windows.Forms.Label lblImgInfSize;
         private System.Windows.Forms.Button btnImgInfBarMm;
         private System.Windows.Forms.Button btnFolderOfImage;
+        private System.Windows.Forms.CheckBox chbAutoOrientation;
+        private System.Windows.Forms.TextBox tbRen;
+        private System.Windows.Forms.Label lblRenInf;
+        private System.Windows.Forms.CheckBox chbRen;
+        private System.Windows.Forms.CheckBox chbExifAsTx;
+        private System.Windows.Forms.CheckBox chbExifOnly;
     }
 }
 

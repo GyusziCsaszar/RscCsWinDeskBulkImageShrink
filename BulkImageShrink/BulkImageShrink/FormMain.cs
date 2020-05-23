@@ -36,6 +36,8 @@ namespace BulkImageShrink
         protected string m_sFolderToSaveImageTo = "";
         protected int m_iTcStart = 0;
 
+        protected int m_iOrientation = 0; // N/A
+
         public FormMain()
         {
             InitializeComponent();
@@ -55,9 +57,16 @@ namespace BulkImageShrink
             int iTrgIgmHeight = StorageRegistry.Read("TargetImage_Height", pbImage.Height);
             tbTrgImgWidth.Text = iTrgIgmWidth.ToString();
             tbTrgImgHeight.Text = iTrgIgmHeight.ToString();
+            SetOrientation(chbPortrait.Checked);
 
             m_iImgInfBarSizeFactor = StorageRegistry.Read("Img_Inf_Bar_Size_factor", m_iImgInfBarSizeFactor);
             SetImageInfoBarSize(m_iImgInfBarSizeFactor);
+
+            int iAutoOrientation = StorageRegistry.Read("AutoOrientation", 0);
+            if (iAutoOrientation > 0)
+            {
+                chbAutoOrientation.Checked = true;
+            }
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -232,6 +241,8 @@ namespace BulkImageShrink
         {
             string sExifTitle = "";
 
+            m_iOrientation = 0; // N/A
+
             try
             {
                 foreach (System.Drawing.Imaging.PropertyItem pi in img.PropertyItems)
@@ -322,6 +333,15 @@ namespace BulkImageShrink
                             {
                                 int int16 = MakeInt16(pi.Value[0], pi.Value[1]);
                                 sProp += int16.ToString();
+
+                                if (pi.Id == 0x0112)
+                                {
+                                    if (chbAutoOrientation.Checked)
+                                    {
+                                        m_iOrientation = int16;
+                                    }
+                                }
+
                                 break;
                             }
 
@@ -354,7 +374,56 @@ namespace BulkImageShrink
 
             pbImage.Image = img;
 
-            chbPortrait.Checked = (img.Height > img.Width);
+            if (m_iOrientation == 0 /*N/A*/ )
+            {
+                chbPortrait.Checked = (img.Height > img.Width);
+            }
+            else
+            {
+
+              //chbPortrait.Checked = true; //Default is true!!!
+
+                var rotateFlip = RotateFlipType.RotateNoneFlipNone;
+                switch (m_iOrientation)
+                {
+                    // Original = 1
+                    // Image is correctly oriented
+                    case 1: rotateFlip = RotateFlipType.RotateNoneFlipNone; break;
+
+                    // MirrorOriginal = 2
+                    // Image has been mirrored horizontally
+                    case 2: rotateFlip = RotateFlipType.RotateNoneFlipX; break;
+
+                    // Half = 3
+                    // Image has been rotated 180 degrees
+                    case 3: rotateFlip = RotateFlipType.Rotate180FlipNone; break;
+
+                    // MirrorHalf = 4
+                    // Image has been mirrored horizontally and rotated 180 degrees
+                    case 4: rotateFlip = RotateFlipType.Rotate180FlipX; break;
+
+                    // MirrorThreeQuarter = 5
+                    // Image has been mirrored horizontally and rotated 270 degrees clockwise
+                    case 5: rotateFlip = RotateFlipType.Rotate90FlipX; break;
+
+                    // ThreeQuarter = 6
+                    // Image has been rotated 270 degrees clockwise
+                    case 6: rotateFlip = RotateFlipType.Rotate90FlipNone; break;
+
+                    // MirrorOneQuarter = 7
+                    // Image has been mirrored horizontally and rotated 90 degrees clockwise.
+                    case 7: rotateFlip = RotateFlipType.Rotate270FlipX; break;
+
+                    // OneQuarter = 8
+                    // Image has been rotated 90 degrees clockwise.
+                    case 8: rotateFlip = RotateFlipType.Rotate270FlipNone; break;
+
+                }
+                if (rotateFlip != RotateFlipType.RotateNoneFlipNone)
+                {
+                    img.RotateFlip(rotateFlip);
+                }
+            }
 
             lblPathValue.Text = sImagePath;
 
@@ -369,7 +438,7 @@ namespace BulkImageShrink
 
             btnSaveFile.Enabled = !bInProgress;
 
-            btnCpyExifToClpBrd.Enabled = !bInProgress;
+          //btnCpyExifToClpBrd.Enabled = !bInProgress;
 
             btnPauseResume.Enabled = bInProgress;
             btnPauseResume.Text = csBTNCAP_PAUSE;
@@ -580,9 +649,9 @@ namespace BulkImageShrink
                 }
 
                 if (iDays > 0) sImgPos += iDays.ToString() + "d ";
-                if (iHrs > 0) sImgPos += iHrs.ToString() + "h ";
-                if (iMin > 0) sImgPos += iMin.ToString() + "m ";
-                if (iSec > 0) sImgPos += iSec.ToString() + "s ";
+                if (iHrs > 0 || iDays > 0) sImgPos += iHrs.ToString() + "h ";
+                if (iMin > 0 || iHrs > 0 || iDays > 0) sImgPos += iMin.ToString() + "m ";
+                if (iSec > 0 || iMin > 0 || iHrs > 0 || iDays > 0) sImgPos += iSec.ToString() + "s ";
 
                 if (sImgPos.Length > 0)
                 {
@@ -725,6 +794,14 @@ namespace BulkImageShrink
             }
 
             OpenFolder(System.IO.Path.GetDirectoryName(lblPathValue.Text));
+        }
+
+        private void chbAutoOrientation_CheckedChanged(object sender, EventArgs e)
+        {
+            int iValue = 0;
+            if (chbAutoOrientation.Checked) iValue = 1;
+
+            StorageRegistry.Write("AutoOrientation", iValue);
         }
     }
 }
