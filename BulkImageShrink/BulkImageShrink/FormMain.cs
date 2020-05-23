@@ -12,7 +12,7 @@ namespace BulkImageShrink
     public partial class FormMain : Form
     {
 
-        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.13";
+        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.14";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
         protected const string csDEF_OUTPUT_EXT = ".png";
@@ -24,6 +24,8 @@ namespace BulkImageShrink
         protected const int ciHEIGHT_NORMAL = 600;
 
         protected const string csATTN_KEEP_IMAGE_VISISBLE = "ATTN: Keep image view visible during processing!!!";
+
+        protected const string csDATETIME_VALUE_NULL = "0000-00-00_00-00-00";
 
         protected int m_iImgInfBarSizeFactor = 0;
 
@@ -40,7 +42,9 @@ namespace BulkImageShrink
 
         protected string m_sExif_EquipMake = "";
         protected string m_sExif_EquipModel = "";
+
         protected string m_sExif_DateTime_Orig = "";
+        protected string m_sExif_DateTime = "";
 
         protected string m_sExif_AsText = "";
 
@@ -143,7 +147,9 @@ namespace BulkImageShrink
 
             m_sExif_EquipMake = "NA";
             m_sExif_EquipModel = "NA";
-            m_sExif_DateTime_Orig = "0000-00-00_00-00-00";
+
+            m_sExif_DateTime_Orig = csDATETIME_VALUE_NULL;
+            m_sExif_DateTime = csDATETIME_VALUE_NULL;
 
             m_sExif_AsText = "";
         }
@@ -342,7 +348,7 @@ namespace BulkImageShrink
                                     switch (pi.Id)
                                     {
 
-                                        case 0x010F: //Equip Make
+                                        case 0x010F: // Equip Make
                                         {
                                             m_sExif_EquipMake = sTx.Substring(0, 1).ToUpper() + sTx.Substring(1);
 
@@ -351,7 +357,7 @@ namespace BulkImageShrink
                                             break;
                                         }
 
-                                        case 0x0110: //Equip Model
+                                        case 0x0110: // Equip Model
                                         {
                                             m_sExif_EquipModel = sTx;
 
@@ -360,7 +366,20 @@ namespace BulkImageShrink
                                             break;
                                         }
 
-                                        case 0x9003: //Exif DT Orig
+                                        case 0x0132: // DateTime
+                                        {
+                                            m_sExif_DateTime = sTx;
+
+                                            //Normalizing...
+                                            m_sExif_DateTime = m_sExif_DateTime.Replace(":", "-");
+                                            m_sExif_DateTime = m_sExif_DateTime.Replace(" ", "_");
+
+                                            if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                            sExifTitle += sTx;
+                                            break;
+                                        }
+
+                                        case 0x9003: // Exif DT Orig
                                         {
                                             m_sExif_DateTime_Orig = sTx;
 
@@ -821,8 +840,18 @@ namespace BulkImageShrink
                     string sTmp = tbRen.Text;
                     if (sTmp.Length == 0) sTmp = "%FN";
 
+                    string sDt = csDATETIME_VALUE_NULL;
+                    if (m_sExif_DateTime_Orig != csDATETIME_VALUE_NULL)
+                    {
+                        sDt = m_sExif_DateTime_Orig;
+                    }
+                    else if (m_sExif_DateTime != csDATETIME_VALUE_NULL)
+                    {
+                        sDt = m_sExif_DateTime;
+                    }
+
                     sTmp = sTmp.Replace("%FN", sFileName);
-                    sTmp = sTmp.Replace("%DT", m_sExif_DateTime_Orig);
+                    sTmp = sTmp.Replace("%DT", sDt);
                     sTmp = sTmp.Replace("%MK", m_sExif_EquipMake);
                     sTmp = sTmp.Replace("%ML", m_sExif_EquipModel);
 
