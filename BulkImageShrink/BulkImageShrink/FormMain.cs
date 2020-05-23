@@ -12,7 +12,7 @@ namespace BulkImageShrink
     public partial class FormMain : Form
     {
 
-        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.12";
+        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.13";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
         protected const string csDEF_OUTPUT_EXT = ".png";
@@ -598,14 +598,17 @@ namespace BulkImageShrink
 
                 Point ptScreen = pbImage.PointToScreen(new Point(0, 0));
 
-                using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
+                if (!chbExifOnly.Checked)
                 {
-                    using (Graphics gScreen = Graphics.FromImage(bmp))
+                    using (Bitmap bmp = new Bitmap(rcImgCtrl.Width, rcImgCtrl.Height))
                     {
-                        gScreen.CopyFromScreen(ptScreen /*rc.Location*/, Point.Empty, rcImgCtrl.Size);
-                    }
+                        using (Graphics gScreen = Graphics.FromImage(bmp))
+                        {
+                            gScreen.CopyFromScreen(ptScreen /*rc.Location*/, Point.Empty, rcImgCtrl.Size);
+                        }
 
-                    bmp.Save(sImagePath, System.Drawing.Imaging.ImageFormat.Png);
+                        bmp.Save(sImagePath, System.Drawing.Imaging.ImageFormat.Png);
+                    }
                 }
 
                 if (chbExifAsTx.Checked)
@@ -615,6 +618,12 @@ namespace BulkImageShrink
                     sAsTx += "\r\n";
 
                     string sExifTxtPath = System.IO.Path.GetDirectoryName(sImagePath);
+                    sExifTxtPath += "\\EXIF";
+                    if (!System.IO.Directory.Exists(sExifTxtPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sExifTxtPath);
+                    }
+
                     sExifTxtPath += "\\" + System.IO.Path.GetFileNameWithoutExtension(sImagePath);
                     sExifTxtPath += ".txt";
 
