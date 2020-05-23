@@ -12,7 +12,7 @@ namespace BulkImageShrink
     public partial class FormMain : Form
     {
 
-        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.14";
+        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.15";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
         protected const string csDEF_OUTPUT_EXT = ".png";
@@ -72,25 +72,16 @@ namespace BulkImageShrink
             m_iImgInfBarSizeFactor = StorageRegistry.Read("Img_Inf_Bar_Size_factor", m_iImgInfBarSizeFactor);
             SetImageInfoBarSize(m_iImgInfBarSizeFactor);
 
-            int iAutoOrientation = StorageRegistry.Read("AutoOrientation", 0);
-            if (iAutoOrientation > 0)
-            {
-                chbAutoOrientation.Checked = true;
-            }
+            int iAutoOrientation = StorageRegistry.Read("AutoOrientation", 1);
+            chbAutoOrientation.Checked = (iAutoOrientation > 0);
 
             int iRenameTarget = StorageRegistry.Read("RenameTarget", 0);
-            if (iRenameTarget > 0)
-            {
-                chbRen.Checked = true;
-            }
+            chbRen.Checked = (iRenameTarget > 0);
 
             tbRen.Text = StorageRegistry.Read("TargetFileNameDef", tbRen.Text);
 
             int iExifAsText = StorageRegistry.Read("ExifAsText", 0);
-            if (iExifAsText > 0)
-            {
-                chbExifAsTx.Checked = true;
-            }
+            chbExifAsTx.Checked = (iExifAsText > 0);
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

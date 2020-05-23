@@ -349,6 +349,8 @@
             // 
             this.chbAutoOrientation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbAutoOrientation.AutoSize = true;
+            this.chbAutoOrientation.Checked = true;
+            this.chbAutoOrientation.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbAutoOrientation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.chbAutoOrientation.ForeColor = System.Drawing.Color.RoyalBlue;
             this.chbAutoOrientation.Location = new System.Drawing.Point(772, 227);
