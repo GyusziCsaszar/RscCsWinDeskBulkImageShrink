@@ -58,6 +58,13 @@
             this.chbRen = new System.Windows.Forms.CheckBox();
             this.chbExifAsTx = new System.Windows.Forms.CheckBox();
             this.chbExifOnly = new System.Windows.Forms.CheckBox();
+            this.btnW280 = new System.Windows.Forms.Button();
+            this.btnW360 = new System.Windows.Forms.Button();
+            this.btnH480 = new System.Windows.Forms.Button();
+            this.lblGuide1 = new System.Windows.Forms.Label();
+            this.lblGuide2 = new System.Windows.Forms.Label();
+            this.lblGuide3 = new System.Windows.Forms.Label();
+            this.chbShowGuide = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbWorkplace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).BeginInit();
             this.SuspendLayout();
@@ -150,19 +157,19 @@
             // 
             this.lblTrgImgWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTrgImgWidth.AutoSize = true;
-            this.lblTrgImgWidth.Location = new System.Drawing.Point(538, 170);
+            this.lblTrgImgWidth.Location = new System.Drawing.Point(537, 170);
             this.lblTrgImgWidth.Name = "lblTrgImgWidth";
-            this.lblTrgImgWidth.Size = new System.Drawing.Size(38, 13);
+            this.lblTrgImgWidth.Size = new System.Drawing.Size(21, 13);
             this.lblTrgImgWidth.TabIndex = 8;
-            this.lblTrgImgWidth.Text = "Width:";
+            this.lblTrgImgWidth.Text = "W:";
             // 
             // tbTrgImgWidth
             // 
             this.tbTrgImgWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTrgImgWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbTrgImgWidth.Location = new System.Drawing.Point(578, 167);
+            this.tbTrgImgWidth.Location = new System.Drawing.Point(561, 167);
             this.tbTrgImgWidth.Name = "tbTrgImgWidth";
-            this.tbTrgImgWidth.Size = new System.Drawing.Size(52, 20);
+            this.tbTrgImgWidth.Size = new System.Drawing.Size(40, 20);
             this.tbTrgImgWidth.TabIndex = 11;
             this.tbTrgImgWidth.Text = "360";
             this.tbTrgImgWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -172,19 +179,19 @@
             // 
             this.lblTrgImgHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTrgImgHeight.AutoSize = true;
-            this.lblTrgImgHeight.Location = new System.Drawing.Point(639, 170);
+            this.lblTrgImgHeight.Location = new System.Drawing.Point(667, 170);
             this.lblTrgImgHeight.Name = "lblTrgImgHeight";
-            this.lblTrgImgHeight.Size = new System.Drawing.Size(41, 13);
+            this.lblTrgImgHeight.Size = new System.Drawing.Size(18, 13);
             this.lblTrgImgHeight.TabIndex = 10;
-            this.lblTrgImgHeight.Text = "Height:";
+            this.lblTrgImgHeight.Text = "H:";
             // 
             // tbTrgImgHeight
             // 
             this.tbTrgImgHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTrgImgHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbTrgImgHeight.Location = new System.Drawing.Point(684, 167);
+            this.tbTrgImgHeight.Location = new System.Drawing.Point(688, 167);
             this.tbTrgImgHeight.Name = "tbTrgImgHeight";
-            this.tbTrgImgHeight.Size = new System.Drawing.Size(52, 20);
+            this.tbTrgImgHeight.Size = new System.Drawing.Size(40, 20);
             this.tbTrgImgHeight.TabIndex = 13;
             this.tbTrgImgHeight.Text = "480";
             this.tbTrgImgHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -424,12 +431,113 @@
             this.chbExifOnly.Text = "EXIF only";
             this.chbExifOnly.UseVisualStyleBackColor = true;
             // 
+            // btnW280
+            // 
+            this.btnW280.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnW280.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnW280.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnW280.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnW280.Location = new System.Drawing.Point(602, 167);
+            this.btnW280.Name = "btnW280";
+            this.btnW280.Size = new System.Drawing.Size(30, 20);
+            this.btnW280.TabIndex = 30;
+            this.btnW280.Text = "280";
+            this.btnW280.UseVisualStyleBackColor = true;
+            this.btnW280.Click += new System.EventHandler(this.btnW280_Click);
+            // 
+            // btnW360
+            // 
+            this.btnW360.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnW360.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnW360.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnW360.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnW360.Location = new System.Drawing.Point(633, 167);
+            this.btnW360.Name = "btnW360";
+            this.btnW360.Size = new System.Drawing.Size(30, 20);
+            this.btnW360.TabIndex = 31;
+            this.btnW360.Text = "360";
+            this.btnW360.UseVisualStyleBackColor = true;
+            this.btnW360.Click += new System.EventHandler(this.btnW360_Click);
+            // 
+            // btnH480
+            // 
+            this.btnH480.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnH480.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnH480.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnH480.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.btnH480.Location = new System.Drawing.Point(729, 167);
+            this.btnH480.Name = "btnH480";
+            this.btnH480.Size = new System.Drawing.Size(30, 20);
+            this.btnH480.TabIndex = 32;
+            this.btnH480.Text = "480";
+            this.btnH480.UseVisualStyleBackColor = true;
+            this.btnH480.Click += new System.EventHandler(this.btnH480_Click);
+            // 
+            // lblGuide1
+            // 
+            this.lblGuide1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblGuide1.AutoSize = true;
+            this.lblGuide1.BackColor = System.Drawing.Color.Red;
+            this.lblGuide1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblGuide1.ForeColor = System.Drawing.Color.White;
+            this.lblGuide1.Location = new System.Drawing.Point(530, 16);
+            this.lblGuide1.Name = "lblGuide1";
+            this.lblGuide1.Size = new System.Drawing.Size(15, 15);
+            this.lblGuide1.TabIndex = 33;
+            this.lblGuide1.Text = "1";
+            // 
+            // lblGuide2
+            // 
+            this.lblGuide2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblGuide2.AutoSize = true;
+            this.lblGuide2.BackColor = System.Drawing.Color.Red;
+            this.lblGuide2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblGuide2.ForeColor = System.Drawing.Color.White;
+            this.lblGuide2.Location = new System.Drawing.Point(635, 16);
+            this.lblGuide2.Name = "lblGuide2";
+            this.lblGuide2.Size = new System.Drawing.Size(15, 15);
+            this.lblGuide2.TabIndex = 34;
+            this.lblGuide2.Text = "2";
+            // 
+            // lblGuide3
+            // 
+            this.lblGuide3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblGuide3.AutoSize = true;
+            this.lblGuide3.BackColor = System.Drawing.Color.Red;
+            this.lblGuide3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblGuide3.ForeColor = System.Drawing.Color.White;
+            this.lblGuide3.Location = new System.Drawing.Point(527, 227);
+            this.lblGuide3.Name = "lblGuide3";
+            this.lblGuide3.Size = new System.Drawing.Size(15, 15);
+            this.lblGuide3.TabIndex = 35;
+            this.lblGuide3.Text = "3";
+            // 
+            // chbShowGuide
+            // 
+            this.chbShowGuide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chbShowGuide.AutoSize = true;
+            this.chbShowGuide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chbShowGuide.Location = new System.Drawing.Point(789, 547);
+            this.chbShowGuide.Name = "chbShowGuide";
+            this.chbShowGuide.Size = new System.Drawing.Size(93, 17);
+            this.chbShowGuide.TabIndex = 36;
+            this.chbShowGuide.Text = "Guide (On/Off)";
+            this.chbShowGuide.UseVisualStyleBackColor = true;
+            this.chbShowGuide.CheckedChanged += new System.EventHandler(this.chbShowGuide_CheckedChanged);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(892, 573);
+            this.Controls.Add(this.chbShowGuide);
+            this.Controls.Add(this.lblGuide3);
+            this.Controls.Add(this.lblGuide2);
+            this.Controls.Add(this.lblGuide1);
+            this.Controls.Add(this.btnH480);
+            this.Controls.Add(this.btnW360);
+            this.Controls.Add(this.btnW280);
             this.Controls.Add(this.chbExifOnly);
             this.Controls.Add(this.chbExifAsTx);
             this.Controls.Add(this.chbRen);
@@ -499,6 +607,13 @@
         private System.Windows.Forms.CheckBox chbRen;
         private System.Windows.Forms.CheckBox chbExifAsTx;
         private System.Windows.Forms.CheckBox chbExifOnly;
+        private System.Windows.Forms.Button btnW280;
+        private System.Windows.Forms.Button btnW360;
+        private System.Windows.Forms.Button btnH480;
+        private System.Windows.Forms.Label lblGuide1;
+        private System.Windows.Forms.Label lblGuide2;
+        private System.Windows.Forms.Label lblGuide3;
+        private System.Windows.Forms.CheckBox chbShowGuide;
     }
 }
 

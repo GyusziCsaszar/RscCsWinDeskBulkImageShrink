@@ -12,7 +12,7 @@ namespace BulkImageShrink
     public partial class FormMain : Form
     {
 
-        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.15";
+        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.16";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
         protected const string csDEF_OUTPUT_EXT = ".png";
@@ -82,6 +82,17 @@ namespace BulkImageShrink
 
             int iExifAsText = StorageRegistry.Read("ExifAsText", 0);
             chbExifAsTx.Checked = (iExifAsText > 0);
+
+            int iShowGuide = StorageRegistry.Read("ShowGuide", 1);
+            chbShowGuide.Checked = (iShowGuide > 0);
+            ShowGuide();
+        }
+
+        private void ShowGuide()
+        {
+            lblGuide1.Visible = chbShowGuide.Checked;
+            lblGuide2.Visible = chbShowGuide.Checked;
+            lblGuide3.Visible = chbShowGuide.Checked;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -961,6 +972,31 @@ namespace BulkImageShrink
             if (chbExifAsTx.Checked) iValue = 1;
 
             StorageRegistry.Write("ExifAsText", iValue);
+        }
+
+        private void btnW280_Click(object sender, EventArgs e)
+        {
+            tbTrgImgWidth.Text = "280";
+        }
+
+        private void btnW360_Click(object sender, EventArgs e)
+        {
+            tbTrgImgWidth.Text = "360";
+        }
+
+        private void btnH480_Click(object sender, EventArgs e)
+        {
+            tbTrgImgHeight.Text = "480";
+        }
+
+        private void chbShowGuide_CheckedChanged(object sender, EventArgs e)
+        {
+            int iValue = 0;
+            if (chbShowGuide.Checked) iValue = 1;
+
+            StorageRegistry.Write("ShowGuide", iValue);
+
+            ShowGuide();
         }
     }
 }
