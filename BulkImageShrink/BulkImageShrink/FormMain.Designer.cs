@@ -363,11 +363,12 @@
             // 
             this.tbRen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tbRen.Location = new System.Drawing.Point(595, 197);
+            this.tbRen.Location = new System.Drawing.Point(597, 197);
             this.tbRen.Name = "tbRen";
-            this.tbRen.Size = new System.Drawing.Size(141, 20);
+            this.tbRen.Size = new System.Drawing.Size(139, 20);
             this.tbRen.TabIndex = 25;
-            this.tbRen.Text = "%FN";
+            this.tbRen.Text = "%DT - %MK %ML (%FN)";
+            this.tbRen.TextChanged += new System.EventHandler(this.tbRen_TextChanged);
             // 
             // lblRenInf
             // 
@@ -387,29 +388,34 @@
             // 
             this.chbRen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbRen.AutoSize = true;
+            this.chbRen.ForeColor = System.Drawing.Color.RoyalBlue;
             this.chbRen.Location = new System.Drawing.Point(539, 199);
             this.chbRen.Name = "chbRen";
             this.chbRen.Size = new System.Drawing.Size(52, 17);
             this.chbRen.TabIndex = 27;
             this.chbRen.Text = "REN:";
             this.chbRen.UseVisualStyleBackColor = true;
+            this.chbRen.CheckedChanged += new System.EventHandler(this.chbRen_CheckedChanged);
             // 
             // chbExifAsTx
             // 
             this.chbExifAsTx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbExifAsTx.AutoSize = true;
+            this.chbExifAsTx.ForeColor = System.Drawing.Color.RoyalBlue;
             this.chbExifAsTx.Location = new System.Drawing.Point(619, 258);
             this.chbExifAsTx.Name = "chbExifAsTx";
             this.chbExifAsTx.Size = new System.Drawing.Size(64, 17);
             this.chbExifAsTx.TabIndex = 28;
             this.chbExifAsTx.Text = "as .TXT";
             this.chbExifAsTx.UseVisualStyleBackColor = true;
+            this.chbExifAsTx.CheckedChanged += new System.EventHandler(this.chbExifAsTx_CheckedChanged);
             // 
             // chbExifOnly
             // 
             this.chbExifOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chbExifOnly.AutoSize = true;
-            this.chbExifOnly.Location = new System.Drawing.Point(684, 258);
+            this.chbExifOnly.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.chbExifOnly.Location = new System.Drawing.Point(688, 258);
             this.chbExifOnly.Name = "chbExifOnly";
             this.chbExifOnly.Size = new System.Drawing.Size(71, 17);
             this.chbExifOnly.TabIndex = 29;

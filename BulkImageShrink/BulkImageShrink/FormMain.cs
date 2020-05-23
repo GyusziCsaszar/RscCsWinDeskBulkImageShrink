@@ -12,7 +12,7 @@ namespace BulkImageShrink
     public partial class FormMain : Form
     {
 
-        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.00";
+        protected const string csAPP_TITLE  = "Bulk Image Shrink v1.12";
         protected const string csAPP_NAME   = "BulkImageShrink";
 
         protected const string csDEF_OUTPUT_EXT = ".png";
@@ -38,6 +38,12 @@ namespace BulkImageShrink
 
         protected int m_iOrientation = 0; // N/A
 
+        protected string m_sExif_EquipMake = "";
+        protected string m_sExif_EquipModel = "";
+        protected string m_sExif_DateTime_Orig = "";
+
+        protected string m_sExif_AsText = "";
+
         public FormMain()
         {
             InitializeComponent();
@@ -53,7 +59,7 @@ namespace BulkImageShrink
             this.Width = Math.Max(ciWIDTH_NORMAL, StorageRegistry.Read("Main_Width", this.Width));
             this.Height = Math.Max(ciHEIGHT_NORMAL, StorageRegistry.Read("Main_Height", this.Height));
 
-            int iTrgIgmWidth  = StorageRegistry.Read("TargetImage_Width" , pbImage.Width );
+            int iTrgIgmWidth = StorageRegistry.Read("TargetImage_Width", pbImage.Width);
             int iTrgIgmHeight = StorageRegistry.Read("TargetImage_Height", pbImage.Height);
             tbTrgImgWidth.Text = iTrgIgmWidth.ToString();
             tbTrgImgHeight.Text = iTrgIgmHeight.ToString();
@@ -66,6 +72,20 @@ namespace BulkImageShrink
             if (iAutoOrientation > 0)
             {
                 chbAutoOrientation.Checked = true;
+            }
+
+            int iRenameTarget = StorageRegistry.Read("RenameTarget", 0);
+            if (iRenameTarget > 0)
+            {
+                chbRen.Checked = true;
+            }
+
+            tbRen.Text = StorageRegistry.Read("TargetFileNameDef", tbRen.Text);
+
+            int iExifAsText = StorageRegistry.Read("ExifAsText", 0);
+            if (iExifAsText > 0)
+            {
+                chbExifAsTx.Checked = true;
             }
         }
 
@@ -113,6 +133,19 @@ namespace BulkImageShrink
             m_sPathToSaveImageTo = "";
 
             m_bFolderOperation = false;
+
+            ClearImageInfo();
+        }
+
+        private void ClearImageInfo()
+        {
+            m_iOrientation = 0; // N/A
+
+            m_sExif_EquipMake = "NA";
+            m_sExif_EquipModel = "NA";
+            m_sExif_DateTime_Orig = "0000-00-00_00-00-00";
+
+            m_sExif_AsText = "";
         }
 
         private void SetOrientation(bool bPortrait)
@@ -241,7 +274,7 @@ namespace BulkImageShrink
         {
             string sExifTitle = "";
 
-            m_iOrientation = 0; // N/A
+            ClearImageInfo();
 
             try
             {
@@ -310,19 +343,35 @@ namespace BulkImageShrink
                                     {
 
                                         case 0x010F: //Equip Make
-                                            {
-                                                if (sExifTitle.Length > 0) sExifTitle += " - ";
-                                                sExifTitle += sTx.Substring(0, 1).ToUpper() + sTx.Substring(1);
-                                                break;
-                                            }
+                                        {
+                                            m_sExif_EquipMake = sTx.Substring(0, 1).ToUpper() + sTx.Substring(1);
+
+                                            if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                            sExifTitle += m_sExif_EquipMake;
+                                            break;
+                                        }
 
                                         case 0x0110: //Equip Model
+                                        {
+                                            m_sExif_EquipModel = sTx;
+
+                                            if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                            sExifTitle += sTx;
+                                            break;
+                                        }
+
                                         case 0x9003: //Exif DT Orig
-                                            {
-                                                if (sExifTitle.Length > 0) sExifTitle += " - ";
-                                                sExifTitle += sTx;
-                                                break;
-                                            }
+                                        {
+                                            m_sExif_DateTime_Orig = sTx;
+
+                                            //Normalizing...
+                                            m_sExif_DateTime_Orig = m_sExif_DateTime_Orig.Replace(":", "-");
+                                            m_sExif_DateTime_Orig = m_sExif_DateTime_Orig.Replace(" ", "_");
+
+                                            if (sExifTitle.Length > 0) sExifTitle += " - ";
+                                            sExifTitle += sTx;
+                                            break;
+                                        }
                                     }
                                 }
 
@@ -362,6 +411,9 @@ namespace BulkImageShrink
                     }
 
                     lbExifData.Items.Add(sProp);
+
+                    if (m_sExif_AsText.Length > 0) m_sExif_AsText += "\r\n";
+                    m_sExif_AsText += sProp;
                 }
             }
             catch (Exception exc)
@@ -388,41 +440,76 @@ namespace BulkImageShrink
                 {
                     // Original = 1
                     // Image is correctly oriented
-                    case 1: rotateFlip = RotateFlipType.RotateNoneFlipNone; break;
+                    case 1:
+                    {
+                        rotateFlip = RotateFlipType.RotateNoneFlipNone;
+                        break;
+                    }
 
                     // MirrorOriginal = 2
                     // Image has been mirrored horizontally
-                    case 2: rotateFlip = RotateFlipType.RotateNoneFlipX; break;
+                    case 2:
+                    {
+                        rotateFlip = RotateFlipType.RotateNoneFlipX;
+                        break;
+                    }
 
                     // Half = 3
                     // Image has been rotated 180 degrees
-                    case 3: rotateFlip = RotateFlipType.Rotate180FlipNone; break;
+                    case 3:
+                    {
+                        rotateFlip = RotateFlipType.Rotate180FlipNone;
+                        break;
+                    }
 
                     // MirrorHalf = 4
                     // Image has been mirrored horizontally and rotated 180 degrees
-                    case 4: rotateFlip = RotateFlipType.Rotate180FlipX; break;
+                    case 4:
+                    {
+                        rotateFlip = RotateFlipType.Rotate180FlipX;
+                        break;
+                    }
 
                     // MirrorThreeQuarter = 5
                     // Image has been mirrored horizontally and rotated 270 degrees clockwise
-                    case 5: rotateFlip = RotateFlipType.Rotate90FlipX; break;
+                    case 5:
+                    {
+                        rotateFlip = RotateFlipType.Rotate90FlipX;
+                        break;
+                    }
 
                     // ThreeQuarter = 6
                     // Image has been rotated 270 degrees clockwise
-                    case 6: rotateFlip = RotateFlipType.Rotate90FlipNone; break;
+                    case 6:
+                    {
+                        rotateFlip = RotateFlipType.Rotate90FlipNone;
+                        break;
+                    }
 
                     // MirrorOneQuarter = 7
                     // Image has been mirrored horizontally and rotated 90 degrees clockwise.
-                    case 7: rotateFlip = RotateFlipType.Rotate270FlipX; break;
+                    case 7:
+                    {
+                        rotateFlip = RotateFlipType.Rotate270FlipX;
+                        break;
+                    }
 
                     // OneQuarter = 8
                     // Image has been rotated 90 degrees clockwise.
-                    case 8: rotateFlip = RotateFlipType.Rotate270FlipNone; break;
+                    case 8:
+                    {
+                        rotateFlip = RotateFlipType.Rotate270FlipNone;
+                        break;
+                    }
 
                 }
+
                 if (rotateFlip != RotateFlipType.RotateNoneFlipNone)
                 {
                     img.RotateFlip(rotateFlip);
                 }
+
+                chbPortrait.Checked = (img.Height > img.Width);
             }
 
             lblPathValue.Text = sImagePath;
@@ -520,6 +607,19 @@ namespace BulkImageShrink
 
                     bmp.Save(sImagePath, System.Drawing.Imaging.ImageFormat.Png);
                 }
+
+                if (chbExifAsTx.Checked)
+                {
+                    string sAsTx = "Image Path: " + lblPathValue.Text + "\r\n";
+                    sAsTx += "\r\n" + m_sExif_AsText;
+                    sAsTx += "\r\n";
+
+                    string sExifTxtPath = System.IO.Path.GetDirectoryName(sImagePath);
+                    sExifTxtPath += "\\" + System.IO.Path.GetFileNameWithoutExtension(sImagePath);
+                    sExifTxtPath += ".txt";
+
+                    System.IO.File.WriteAllText(sExifTxtPath, sAsTx);
+                }
             }
             catch (Exception exc)
             {
@@ -539,12 +639,7 @@ namespace BulkImageShrink
             }
 
             string sAsTx = "Image Path: " + lblPathValue.Text + "\r\n";
-
-            foreach (object obj in lbExifData.Items)
-            {
-                if (sAsTx.Length > 0) sAsTx += "\r\n";
-                sAsTx += obj.ToString();
-            }
+            sAsTx += "\r\n" + m_sExif_AsText;
             sAsTx += "\r\n";
 
             Clipboard.Clear();
@@ -711,7 +806,21 @@ namespace BulkImageShrink
             if (bLoadSuccess)
             {
 
-                m_sPathToSaveImageTo    = m_sFolderToSaveImageTo + "\\" + System.IO.Path.GetFileNameWithoutExtension(sImagePath) + csDEF_OUTPUT_EXT;
+                string sFileName = System.IO.Path.GetFileNameWithoutExtension(sImagePath);
+                if (chbRen.Checked)
+                {
+                    string sTmp = tbRen.Text;
+                    if (sTmp.Length == 0) sTmp = "%FN";
+
+                    sTmp = sTmp.Replace("%FN", sFileName);
+                    sTmp = sTmp.Replace("%DT", m_sExif_DateTime_Orig);
+                    sTmp = sTmp.Replace("%MK", m_sExif_EquipMake);
+                    sTmp = sTmp.Replace("%ML", m_sExif_EquipModel);
+
+                    sFileName = sTmp;
+                }
+
+                m_sPathToSaveImageTo    = m_sFolderToSaveImageTo + "\\" + sFileName + csDEF_OUTPUT_EXT;
                 m_bFolderOperation      = true;
 
                 tmrSaveFile.Enabled     = true;
@@ -802,6 +911,27 @@ namespace BulkImageShrink
             if (chbAutoOrientation.Checked) iValue = 1;
 
             StorageRegistry.Write("AutoOrientation", iValue);
+        }
+
+        private void chbRen_CheckedChanged(object sender, EventArgs e)
+        {
+            int iValue = 0;
+            if (chbRen.Checked) iValue = 1;
+
+            StorageRegistry.Write("RenameTarget", iValue);
+        }
+
+        private void tbRen_TextChanged(object sender, EventArgs e)
+        {
+            StorageRegistry.Write("TargetFileNameDef", tbRen.Text);
+        }
+
+        private void chbExifAsTx_CheckedChanged(object sender, EventArgs e)
+        {
+            int iValue = 0;
+            if (chbExifAsTx.Checked) iValue = 1;
+
+            StorageRegistry.Write("ExifAsText", iValue);
         }
     }
 }
